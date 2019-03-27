@@ -9,6 +9,7 @@ from app import app
 from flask import render_template, request
 from werkzeug.utils import secure_filename
 from app.forms import UploadForm
+from flask import jsonify
 
 ###
 # Routing for your application.
@@ -21,15 +22,15 @@ def upload():
         photo= request.file['photo']
         filename= secure_filename(photo.filename)
         photo.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-        return {
+        return jsonify({
             "message": "File Upload Successful",
             "photoname": filename,
             "description": desc
-        }
+        })
     else:
-        return {
+        return jsonify({
             "errors": form_errors(myform)
-        }
+        })
 
 # Please create all new routes and view functions above this route.
 # This route is now our catch all route for our VueJS single page
